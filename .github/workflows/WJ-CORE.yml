@@ -180,12 +180,12 @@ jobs:
           cd ./wrt/
 
 #          make -j$(nproc) || make -j$(nproc) V=s
-make feeds/packages/net/zerotier/compile V=s -j$(nproc)
-make feeds/luci/applications/luci-app-zerotier/compile V=s -j$(nproc)
-make package/luci-app-adguardhome/compile V=s -j$(nproc)
-make package/luci-app-passwall/compile V=s -j$(nproc)
-make package/OpenWrt-nikki/nikki/compile V=s -j$(nproc)
-make package/OpenWrt-nikki/luci-app-nikki/compile V=s -j$(nproc)
+make ./feeds/packages/net/zerotier/compile V=s -j$(nproc)
+make ./feeds/luci/applications/luci-app-zerotier/compile V=s -j$(nproc)
+make ./package/luci-app-adguardhome/compile V=s -j$(nproc)
+make ./package/luci-app-passwall/compile V=s -j$(nproc)
+make ./package/OpenWrt-nikki/nikki/compile V=s -j$(nproc)
+make ./package/OpenWrt-nikki/luci-app-nikki/compile V=s -j$(nproc)
 # 编译完成后，.ipk 文件会生成在 ./bin/packages/<YourArchitecture>/base 目录下。将其拷贝到路由器上即可通过 opkg 进行安装
       - name: Machine Information
         run: |
