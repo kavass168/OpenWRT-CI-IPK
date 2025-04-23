@@ -180,7 +180,7 @@ jobs:
           cd ./wrt/
 
 #          make -j$(nproc) || make -j$(nproc) V=s
-make ./feeds/packages/net/zerotier/compile V=s
+make feeds/packages/net/zerotier/compile V=s
 make ./feeds/luci/applications/luci-app-zerotier/compile V=s
 make ./package/luci-app-adguardhome/compile V=s -j$(nproc)
 make ./package/luci-app-passwall/compile V=s -j$(nproc)
