@@ -179,14 +179,8 @@ jobs:
         run: |
           cd ./wrt/
 
-#          make -j$(nproc) || make -j$(nproc) V=s
-          make feeds/packages/net/zerotier/compile V=s
-          make ./feeds/luci/applications/luci-app-zerotier/compile V=s
-          make ./package/luci-app-adguardhome/compile V=s -j$(nproc)
-          make ./package/luci-app-passwall/compile V=s -j$(nproc)
-          make ./package/OpenWrt-nikki/nikki/compile V=s -j$(nproc)
-          make ./package/OpenWrt-nikki/luci-app-nikki/compile V=s -j$(nproc)
-          # 编译完成后，.ipk 文件会生成在 ./bin/packages/<YourArchitecture>/base 目录下。将其拷贝到路由器上即可通过 opkg 进行安装
+          make -j$(nproc) || make -j$(nproc) V=s
+
       - name: Machine Information
         run: |
           cd ./wrt/
@@ -211,11 +205,11 @@ jobs:
 
             find ./bin/targets/ -iregex ".*\(buildinfo\|json\|sha256sums\|packages\)$" -exec rm -rf {} +
 
-            for FILE in $(find ./bin/targets/ -type f -iname "*ipk*") ; do
-              #EXT=$(basename $FILE | cut -d '.' -f 2-)
-              #NAME=$(basename $FILE | cut -d '.' -f 1 | grep -io "\($WRT_TARGET\).*")
-              #NEW_FILE="$WRT_VER"_"$NAME"_"$WRT_DATE"."$EXT"
-              mv -f $FILE ./upload/$FILE
+            for FILE in $(find ./bin/targets/ -type f -iname "*$WRT_TARGET*") ; do
+              EXT=$(basename $FILE | cut -d '.' -f 2-)
+              NAME=$(basename $FILE | cut -d '.' -f 1 | grep -io "\($WRT_TARGET\).*")
+              NEW_FILE="$WRT_VER"_"$NAME"_"$WRT_DATE"."$EXT"
+              mv -f $FILE ./upload/$NEW_FILE
             done
 
             find ./bin/targets/ -type f -exec mv -f {} ./upload/ \;
