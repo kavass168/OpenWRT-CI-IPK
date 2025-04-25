@@ -181,6 +181,14 @@ jobs:
 
           #make -j$(nproc) || make -j$(nproc) V=s
           make V=s ./package/luci-app-adguardhome/compile
+          make V=s ./package/OpenWrt-nikki/nikki/compile
+          make V=s ./package/OpenWrt-nikki/luci-app-nikki/compile
+          make V=s ./feeds/packages/net/zerotier/compile
+          make V=s ./feeds/luci/applications/luci-app-zerotier/compile
+          make V=s ./package/luci-app-mosdns/v2dat/compile
+          make V=s ./package/luci-app-mosdns/mosdns/compile
+          make V=s ./package/luci-app-mosdns/luci-app-mosdns/compile
+          make V=s ./feeds/luci/applications/luci-app-ddns/compile
 
       - name: Machine Information
         run: |
@@ -198,7 +206,7 @@ jobs:
         run: |
           cd ./wrt/ && mkdir ./upload/
 
-          cp -f ./.config ./upload/Config_"$WRT_CONFIG"_"$WRT_VER"_"$WRT_DATE".txt
+          #cp -f ./.config ./upload/Config_"$WRT_CONFIG"_"$WRT_VER"_"$WRT_DATE".txt
 
           if [[ $WRT_TEST != 'true' ]]; then
             echo "WRT_KVER=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^kernel - \K[\d\.]+' {} \;)" >> $GITHUB_ENV
@@ -206,11 +214,8 @@ jobs:
 
             find ./bin/targets/ -iregex ".*\(buildinfo\|json\|sha256sums\|packages\)$" -exec rm -rf {} +
 
-            for FILE in $(find ./bin/targets/ -type f -iname "*$WRT_TARGET*") ; do
-              EXT=$(basename $FILE | cut -d '.' -f 2-)
-              NAME=$(basename $FILE | cut -d '.' -f 1 | grep -io "\($WRT_TARGET\).*")
-              NEW_FILE="$WRT_VER"_"$NAME"_"$WRT_DATE"."$EXT"
-              mv -f $FILE ./upload/$NEW_FILE
+            for FILE in $(find ./bin/ -type f -iname "*.ipk") ; do
+              mv -f $FILE ./upload/$FILE
             done
 
             find ./bin/targets/ -type f -exec mv -f {} ./upload/ \;
@@ -224,12 +229,8 @@ jobs:
           tag_name: ${{env.WRT_CONFIG}}_${{env.WRT_VER}}_${{env.WRT_DATE}}
           files: ./wrt/upload/*.*
           body: |
-            这是个平台固件包，内含多个设备！
-            请注意选择你需要的设备固件！
-            不要问，刷就完事了！
-
-            全系带开源硬件加速，别问了！
-
+            这是个平台固件包，内含多个设备！               个人修改编译自定IPK
+ 
             源码：${{env.WRT_REPO}}
             分支：${{env.WRT_BRANCH}}
             提交：${{env.WRT_HASH}}
