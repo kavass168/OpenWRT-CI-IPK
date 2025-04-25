@@ -179,7 +179,8 @@ jobs:
         run: |
           cd ./wrt/
 
-          make -j$(nproc) || make -j$(nproc) V=s
+          #make -j$(nproc) || make -j$(nproc) V=s
+          make V=s ./package/luci-app-adguardhome/compile
 
       - name: Machine Information
         run: |
