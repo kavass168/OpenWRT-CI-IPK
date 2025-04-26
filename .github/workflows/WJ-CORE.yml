@@ -179,16 +179,16 @@ jobs:
         run: |
           cd ./wrt/
 
-          #make -j$(nproc) || make -j$(nproc) V=s
-          make V=s ./package/luci-app-adguardhome/compile
-          make V=s ./package/OpenWrt-nikki/nikki/compile
-          make V=s ./package/OpenWrt-nikki/luci-app-nikki/compile
-          make V=s ./feeds/packages/net/zerotier/compile
-          make V=s ./feeds/luci/applications/luci-app-zerotier/compile
-          make V=s ./package/luci-app-mosdns/v2dat/compile
-          make V=s ./package/luci-app-mosdns/mosdns/compile
-          make V=s ./package/luci-app-mosdns/luci-app-mosdns/compile
-          make V=s ./feeds/luci/applications/luci-app-ddns/compile
+          make -j$(nproc) || make -j$(nproc) V=s
+          #make V=s ./package/luci-app-adguardhome/compile
+          #make V=s ./package/OpenWrt-nikki/nikki/compile
+          #make V=s ./package/OpenWrt-nikki/luci-app-nikki/compile
+          #make V=s ./feeds/packages/net/zerotier/compile
+          #make V=s ./feeds/luci/applications/luci-app-zerotier/compile
+          #make V=s ./package/luci-app-mosdns/v2dat/compile
+          #make V=s ./package/luci-app-mosdns/mosdns/compile
+          #make V=s ./package/luci-app-mosdns/luci-app-mosdns/compile
+          #make V=s ./feeds/luci/applications/luci-app-ddns/compile
 
       - name: Machine Information
         run: |
@@ -214,9 +214,17 @@ jobs:
 
             find ./bin/targets/ -iregex ".*\(buildinfo\|json\|sha256sums\|packages\)$" -exec rm -rf {} +
 
+            for FILE in $(find ./bin/targets/ -type f -iname "*$WRT_TARGET*") ; do
+              EXT=$(basename $FILE | cut -d '.' -f 2-)
+              NAME=$(basename $FILE | cut -d '.' -f 1 | grep -io "\($WRT_TARGET\).*")
+              NEW_FILE="$WRT_VER"_"$NAME"_"$WRT_DATE"."$EXT"
+              mv -f $FILE ./upload/$NEW_FILE
+            done
+            
             for FILE in $(find ./bin/ -type f -iname "*.ipk") ; do
               mv -f $FILE ./upload/$FILE
             done
+            
 
             find ./bin/targets/ -type f -exec mv -f {} ./upload/ \;
 
