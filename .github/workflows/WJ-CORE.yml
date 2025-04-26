@@ -222,7 +222,7 @@ jobs:
             done
             
             for FILE in $(find ./bin/ -type f -iname "*.apk") ; do
-              mv -f $FILE ./upload/$FILE
+              mv -f $FILE ./upload/
             done
             
 
