@@ -1,3 +1,10 @@
+# 手动编译IPK列表
+CONFIG_PACKAGE_luci-app-nikki=y
+CONFIG_PACKAGE_luci-app-adguardhome=y
+CONFIG_PACKAGE_luci-app-zerotier=y
+CONFIG_PACKAGE_luci-app-ddns=y
+CONFIG_PACKAGE_luci-app-mosdns=y
+
 #科学插件调整
 CONFIG_PACKAGE_luci-app-homeproxy=y
 #增加插件
