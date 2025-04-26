@@ -221,7 +221,7 @@ jobs:
               mv -f $FILE ./upload/$NEW_FILE
             done
             
-            for FILE in $(find ./bin/ -type f -iname "*.ipk") ; do
+            for FILE in $(find ./bin/ -type f -iname "*.apk") ; do
               mv -f $FILE ./upload/$FILE
             done
             
